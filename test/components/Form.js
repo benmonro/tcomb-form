@@ -2,40 +2,36 @@
 var tape = require('tape');
 var t = require('../../');
 var Form = t.form.Form;
-
-
-
 var path = require('path');
-var fs = require('fs');var transformer = {
-    format: function (value) {
-        return t.Str.is(value) ? value : value === true ? '1' : '0';
-    },
-    parse: function (value) {
-        return value === '1';
-    }
-};
+var React = require('react');
+var ReactDom = require('react-dom');
+var fs = require('fs');
+
+var sample = JSON.parse('{"options":{"fields":{"policy":{"options":[{"value":"option1","text":"option 1"},{"value":"option2","text":"option 2"},{"value":"option3","text":"option 3"}]}}},"value":{"policy":"option2"}}');
 
 if (typeof window !== 'undefined') {
 
+    tape('Form', function(tape) {
 
-    tape.only('Form', function (tape) {
-        console.log('testttt')
-        tape.test('value', function (tape) {
-            tape.plan(1);
+        tape.test('value', function(tape) {
 
-            var sample = JSON.parse('{ "options": { "fields":{ "policy":{ "options":[ {"value":"option1", "text":"option 1"}, {"value":"option2", "text":"option 2"}, {"value":"option3", "text":"option 3"} ] } } }, "value": { "policy": "option2" } }');
+
+            tape.plan(1); // ************ set to tape.plan(2) to stop Karma and see the form in the browser *************
+
 
             var schema = t.struct({
-                policy: t.enums.of("option1 option2 option3")
+                policy: t.enums.of('option1 option2 option3')
             });
-            tape.strictEqual(
-                new Form({
-                    options: sample.options,
-                    type: schema,
-                    value: sample.value
-                }),
-                'option2', 'should handle option from json');
-
+            var node = document.createElement('div');
+            document.body.appendChild(node);
+            var component = ReactDom.render(React.createElement(Form, {
+                options: sample.options,
+                type: schema,
+                value: sample.value
+            }), node);
+            tape.deepEqual(component.getValue(), {policy: 'option2'});
         });
+
     });
+
 }
