@@ -4,3 +4,4 @@ require('./Checkbox');
 require('./Select');
 require('./Radio');
 require('./Datetime');
+require('./Form');

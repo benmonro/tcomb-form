@@ -1,0 +1,16 @@
+{
+    "options": {
+        "fields":{
+            "policy":{
+                "options":[
+                    {"value":"option1", "text":"option 1"},
+                    {"value":"option2", "text":"option 2"},
+                    {"value":"option3", "text":"option 3"}
+                ]
+            }
+        }
+    },
+    "value": {
+        "policy": "second"
+    }
+}
